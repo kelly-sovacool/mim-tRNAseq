@@ -14,7 +14,6 @@ ENV PATH=/opt2/usearch:$PATH
 
 # install python 3.7 & local mimseq
 RUN mamba install -c conda-forge python=3.7 && \
-	ln -s /usr/bin/python3.7 /usr/bin/python && \
 	python3.7 -m pip install .
 
 # check mimseq installation
