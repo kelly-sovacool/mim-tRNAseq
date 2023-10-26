@@ -2,8 +2,9 @@ FROM nciccbr/ccbr_ubuntu_base_20.04:v6
 
 RUN apt-get update && apt-get install -y libffi-dev libdeflate-dev libsqlite3-dev libcurl4-openssl-dev
 
-RUN pwd
 # install python 3.7 & local mimseq
+COPY . /opt2/mim-tRNAseq
+WORKDIR /opt2/mim-tRNAseq
 RUN mamba install -c conda-forge python=3.7 && \
 	python3.7 -m pip install .
 
