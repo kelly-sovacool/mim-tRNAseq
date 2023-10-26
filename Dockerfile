@@ -2,6 +2,11 @@ FROM nciccbr/ccbr_ubuntu_base_20.04:v6
 
 RUN apt-get update && apt-get install -y libffi-dev libdeflate-dev libsqlite3-dev libcurl4-openssl-dev
 
+RUN pwd
+# install python 3.7 & local mimseq
+RUN mamba install -c conda-forge python=3.7 && \
+	python3.7 -m pip install .
+
 # install usearch
 WORKDIR /opt2
 RUN wget https://drive5.com/downloads/usearch10.0.240_i86linux32.gz && \
@@ -12,9 +17,6 @@ RUN wget https://drive5.com/downloads/usearch10.0.240_i86linux32.gz && \
         rm -f usearch10.0.240_i86linux32.gz
 ENV PATH=/opt2/usearch:$PATH
 
-# install python 3.7 & local mimseq
-RUN mamba install -c conda-forge python=3.7 && \
-	python3.7 -m pip install .
 
 # check mimseq installation
 RUN which mimseq && mimseq --help
