@@ -20,7 +20,7 @@ ENV PATH=/opt2/usearch:$PATH
 
 
 # check mimseq installation
-RUN which mimseq && mimseq --help
+RUN which mimseq && mimseq --version
 
 # cleanup
 RUN apt-get clean && apt-get purge && \
