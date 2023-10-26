@@ -44,8 +44,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
 	make \
 	manpages-dev \
   pigz \
-	python3.7-pip \
-  python3.7-dev \
 	rsync \
 	unzip \
 	wget \
@@ -54,7 +52,14 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
 	zlibc 
 
 # need python3.7 for mimseq
-RUN ln -s /usr/bin/python3.7 /usr/bin/python
+RUN sudo apt update && \
+	wget -c http://mirrors.kernel.org/ubuntu/pool/main/libf/libffi/libffi6_3.2.1-9_amd64.deb http://security.ubuntu.com/ubuntu/pool/main/p/python3.7/libpython3.7-stdlib_3.7.5-2~19.10ubuntu1_amd64.deb http://security.ubuntu.com/ubuntu/pool/main/p/python3.7/libpython3.7-minimal_3.7.5-2~19.10ubuntu1_amd64.deb http://security.ubuntu.com/ubuntu/pool/main/p/python3.7/python3.7-minimal_3.7.5-2~19.10ubuntu1_amd64.deb http://security.ubuntu.com/ubuntu/pool/main/p/python3.7/python3.7_3.7.5-2~19.10ubuntu1_amd64.deb && \
+	sudo apt install ./libffi6_3.2.1-9_amd64.deb ./libpython3.7-minimal_3.7.5-2~19.10ubuntu1_amd64.deb ./libpython3.7-stdlib_3.7.5-2~19.10ubuntu1_amd64.deb ./python3.7-minimal_3.7.5-2~19.10ubuntu1_amd64.deb ./python3.7_3.7.5-2~19.10ubuntu1_amd64.deb && \
+	ln -s /usr/bin/python3.7 /usr/bin/python
+
+# install local mimseq
+RUN python -m pip install --upgrade pip && \
+	pip install .
 
 # install usearch
 WORKDIR /opt2
@@ -65,10 +70,6 @@ RUN wget https://drive5.com/downloads/usearch10.0.240_i86linux32.gz && \
         mv usearch10.0.240_i86linux32 /opt2/usearch/usearch && \
         rm -f usearch10.0.240_i86linux32.gz
 ENV PATH=/opt2/usearch:$PATH
-
-# install local mimseq
-RUN python -m pip install --upgrade pip && \
-	pip install .
 
 # check mimseq installation
 RUN which mimseq && mimseq --help

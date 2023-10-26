@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - docker
+    paths:
+      - .github/workflows/build-docker.yml
+      - Dockerfile
 
 env:
   dockerfile: "Dockerfile"
