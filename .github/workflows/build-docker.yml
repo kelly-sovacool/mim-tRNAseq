@@ -4,29 +4,15 @@ on:
   push:
     branches:
       - docker
-  workflow_dispatch:
-    inputs:
-      dockerfile:
-        type: string
-        description: path to the Dockerfile in the repo (e.g. common/ccbr_bwa/Dockerfile)
-        required: true
-      namespace:
-        type: string
-        description: namespace on dockerhub
-        required: true
-        default: nciccbr
-      image_name:
-        type: string
-        description: container image name (e.g. ccbr_toolname)
-        required: true
-      version:
-        type: string
-        description: container version tag (e.g. 1.0.0)
-        required: true
-      push:
-        type: boolean
-        description: Push to DockerHub (leave unchecked to just build the container without pushing)
-        required: true
+    paths:
+      - Dockerfile
+
+env:
+  dockerfile: "Dockerfile"
+  namespace: "kellysovacool"
+  image_name: "tranquil_mimseq_1.3.7-dev"
+  version: "0.1.0"
+  push: "true"
 
 jobs:
   build-docker:
@@ -34,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Login to DockerHub
-        if: ${{ github.event.inputs.push == 'true' }}
+        if: ${{ env.push == 'true' }}
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -42,12 +28,12 @@ jobs:
       - name: Prepare build-time variables
         id: vars
         run: |
-            echo "CONTEXT=$(dirname ${{ github.event.inputs.dockerfile }})" >> "$GITHUB_OUTPUT"
+            echo "CONTEXT=$(dirname ${{ env.dockerfile }})" >> "$GITHUB_OUTPUT"
             echo "DATE=$(date +"%Y-%m-%d")" >> "$GITHUB_OUTPUT"
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
           context: ${{ steps.vars.outputs.CONTEXT }}
-          file: ${{ github.event.inputs.dockerfile }}
-          push: ${{ github.event.inputs.push }}
-          tags: ${{ github.event.inputs.namespace }}/${{ github.event.inputs.image_name }}:${{ github.event.inputs.version }}
+          file: ${{ env.dockerfile }}
+          push: ${{ env.push }}
+          tags: ${{ env.namespace }}/${{ env.image_name }}:${{ env.version }}
