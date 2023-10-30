@@ -5,10 +5,13 @@ RUN apt-get update && apt-get install -y libffi-dev libdeflate-dev libsqlite3-de
 # install python 3.7 & local mimseq
 COPY . /opt2/mim-tRNAseq
 WORKDIR /opt2/mim-tRNAseq
-RUN mamba install -c conda-forge python=3.7 && \
-	python3.7 -m pip install . --target /opt2 --upgrade
-ENV PATH=/opt2/bin/:$PATH
-ENV PYTHONPATH=/opt2/mimseq:$PYTHONPATH
+RUN mamba create -n py37 -c conda-forge python=3.7 && \
+  mamba activate py37 && \
+  python3.7 -m pip install . --upgrade && \
+  mimseq --version
+
+# check mimseq installation
+RUN which mimseq && mimseq --version
 
 # install usearch
 WORKDIR /opt2
@@ -20,8 +23,6 @@ RUN wget https://drive5.com/downloads/usearch10.0.240_i86linux32.gz && \
         rm -f usearch10.0.240_i86linux32.gz
 ENV PATH=/opt2/usearch:$PATH
 
-# check mimseq installation
-RUN which mimseq && mimseq --version
 
 # cleanup
 RUN apt-get clean && apt-get purge && \
