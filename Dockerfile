@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y libffi-dev libdeflate-dev libsqlite3-de
 COPY . /opt2/mim-tRNAseq
 WORKDIR /opt2/mim-tRNAseq
 RUN mamba create -n py37 -c conda-forge python=3.7 && \
-  mamba activate py37 && \
+  conda activate py37 && \
   python3.7 -m pip install . --upgrade && \
   mimseq --version
 
