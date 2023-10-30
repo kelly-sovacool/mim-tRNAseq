@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y libffi-dev libdeflate-dev libsqlite3-de
 COPY . /opt2/mim-tRNAseq
 WORKDIR /opt2/mim-tRNAseq
 RUN mamba install -c conda-forge python=3.7 && \
-	python3.7 -m pip install .
+	python3.7 -m pip install . --target /opt2 --upgrade
 
 # install usearch
 WORKDIR /opt2
