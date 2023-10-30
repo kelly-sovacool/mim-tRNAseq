@@ -7,6 +7,8 @@ COPY . /opt2/mim-tRNAseq
 WORKDIR /opt2/mim-tRNAseq
 RUN mamba install -c conda-forge python=3.7 && \
 	python3.7 -m pip install . --target /opt2 --upgrade
+ENV PATH=/opt2/bin/:$PATH
+ENV PYTHONPATH=/opt2/mimseq:$PYTHONPATH
 
 # install usearch
 WORKDIR /opt2
@@ -17,7 +19,6 @@ RUN wget https://drive5.com/downloads/usearch10.0.240_i86linux32.gz && \
         mv usearch10.0.240_i86linux32 /opt2/usearch/usearch && \
         rm -f usearch10.0.240_i86linux32.gz
 ENV PATH=/opt2/usearch:$PATH
-
 
 # check mimseq installation
 RUN which mimseq && mimseq --version
