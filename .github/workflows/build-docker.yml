@@ -28,7 +28,7 @@ jobs:
       - name: Prepare build-time variables
         id: vars
         run: |
-            echo "VERSION=$( cat mimseq/version.py | ggrep -oP 'v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?' )"  >> "$GITHUB_OUTPUT"
+            echo "VERSION=$( cat mimseq/version.py | grep -oP 'v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?' )"  >> "$GITHUB_OUTPUT"
             echo "CONTEXT=$(dirname ${{ env.dockerfile }})" >> "$GITHUB_OUTPUT"
             echo "DATE=$(date +"%Y-%m-%d")" >> "$GITHUB_OUTPUT"
       - name: Build and push
