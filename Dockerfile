@@ -24,14 +24,15 @@ RUN apt-get update && apt-get install -y \
 # install python 3.7 & local mimseq
 COPY . /opt2/mim-tRNAseq
 WORKDIR /opt2/mim-tRNAseq
-RUN python -m pip install . --upgrade && \
+RUN pip install . && \
   mimseq --version
 
 # check mimseq installation
+WORKDIR /opt2
 RUN which mimseq && mimseq --version
+RUN python --version
 
 # install usearch
-WORKDIR /opt2
 RUN wget https://drive5.com/downloads/usearch10.0.240_i86linux32.gz && \
         gunzip usearch10.0.240_i86linux32.gz && \
         chmod a+x usearch10.0.240_i86linux32 && \
