@@ -24,7 +24,8 @@ RUN apt-get update && apt-get install -y \
 # install python 3.7 & local mimseq
 COPY . /opt2/mim-tRNAseq
 WORKDIR /opt2/mim-tRNAseq
-RUN pip install . && \
+RUN pip install --upgrade pip && \
+  pip install . && \
   mimseq --version
 
 # check mimseq installation
