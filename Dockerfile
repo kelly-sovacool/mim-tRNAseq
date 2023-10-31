@@ -19,10 +19,7 @@ RUN apt-get update && apt-get install -y \
   libcurl4-openssl-dev \
 	pigz \
 	unzip \
-  wget \
-	zlib1g \
-	zlib1g-dev \
-	zlibc 
+  wget
 
 # install python 3.7 & local mimseq
 COPY . /opt2/mim-tRNAseq
