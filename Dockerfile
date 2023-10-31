@@ -1,13 +1,33 @@
-FROM nciccbr/ccbr_ubuntu_base_20.04:v6
+FROM python:3.7.17-alpine
 
-RUN apt-get update && apt-get install -y libffi-dev libdeflate-dev libsqlite3-dev libcurl4-openssl-dev
+RUN mkdir -p /opt2 && mkdir -p /data2
+ENV TZ=America/New_York
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+RUN apt update && apt-get -y upgrade
+# Set the locale
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+		locales build-essential cmake cpanminus && \
+	localedef -i en_US -f UTF-8 en_US.UTF-8 && \
+	cpanm FindBin Term::ReadLine
+
+RUN apt-get update && apt-get install -y \
+	curl \
+  libffi-dev \
+  libdeflate-dev \
+  libsqlite3-dev \
+  libcurl4-openssl-dev \
+	pigz \
+	unzip \
+  wget \
+	zlib1g \
+	zlib1g-dev \
+	zlibc 
 
 # install python 3.7 & local mimseq
 COPY . /opt2/mim-tRNAseq
 WORKDIR /opt2/mim-tRNAseq
-RUN mamba create -n py37 -c conda-forge python=3.7 && \
-  conda activate py37 && \
-  python3.7 -m pip install . --upgrade && \
+RUN python -m pip install . --upgrade && \
   mimseq --version
 
 # check mimseq installation
