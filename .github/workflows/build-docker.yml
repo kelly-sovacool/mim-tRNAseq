@@ -11,7 +11,7 @@ on:
 env:
   dockerfile: "Dockerfile"
   namespace: "kellysovacool"
-  image_name: "py3.7_mimseq"
+  image_name: "tranquil_mimseq"
   version: "1.3.7-dev"
   push: "true"
 
